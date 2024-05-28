@@ -1,36 +1,19 @@
---- Logitech G Hub Aim Recoil Script for Rust
+-- Logitech G Hub Aim Recoil Script for Rust with Caps Lock Toggle
+
+local recoilEnabled = false
 
 function OnEvent(event, arg)
-    if event == "MOUSE_BUTTON_PRESSED" and arg == 1 then
-        recoil_mode = not recoil_mode
-        if recoil_mode then
+    if event == "CAPSLOCK_TOGGLE" then
+        recoilEnabled = not recoilEnabled
+        if recoilEnabled then
             OutputLogMessage("Recoil script enabled\n")
         else
             OutputLogMessage("Recoil script disabled\n")
         end
     end
 
-    if event == "MOUSE_BUTTON_PRESSED" and arg == 2 then
-        recoil_mode = false
-        OutputLogMessage("Recoil script disabled\n")
-    end
-
-    if event == "MOUSE_BUTTON_PRESSED" and arg == 3 then
-        toggle_recoil = not toggle_recoil
-        if toggle_recoil then
-            OutputLogMessage("Toggle recoil enabled\n")
-        else
-            OutputLogMessage("Toggle recoil disabled\n")
-        end
-    end
-
-    if event == "G_PRESSED" and recoil_mode then
-        if toggle_recoil then
-            repeat
-                Sleep(30)
-                PressAndReleaseKey("spacebar")
-            until not IsMouseButtonPressed(1)
-        else
+    if recoilEnabled then
+        if event == "G_PRESSED" then
             repeat
                 Sleep(30)
                 PressAndReleaseKey("spacebar")
